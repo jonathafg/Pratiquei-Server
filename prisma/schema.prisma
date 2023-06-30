@@ -1,0 +1,113 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator erd {
+  provider = "prisma-erd-generator"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Professores {
+  id       String @id @default(cuid())
+  username String @unique
+  password String
+  nickname String
+
+  Turmas     Turmas[]
+  Atividades Atividades[]
+}
+
+model Alunos {
+  id         String       @id @default(cuid())
+  username   String       @unique
+  password   String
+  nickname   String
+  turmaId    String
+  Respostas  Respostas[]
+  Tentativas Tentativas[]
+
+  turma Turmas  @relation(fields: [turmaId], references: [id])
+  Notas Notas[]
+}
+
+model Turmas {
+  id           String   @id @default(cuid())
+  name         String
+  professorId String
+  Alunos       Alunos[]
+
+  AtividadesdasTurmas AtividadesdasTurmas[]
+
+  professor Professores @relation(fields: [professorId], references: [id])
+}
+
+model Atividades {
+  id           String       @id @default(cuid())
+  name         String
+  professorId String
+  enunciado    String?
+  Questoes     Questoes[]
+  Notas        Notas[]
+  Tentativas   Tentativas[]
+
+  AtividadesdasTurmas AtividadesdasTurmas[]
+
+  professor Professores @relation(fields: [professorId], references: [id])
+}
+
+model Questoes {
+  id                 String      @id @default(cuid())
+  atividadesId       String
+  conteudo           String
+  alternativas       String[]
+  alternativaCorreta String
+  Respostas          Respostas[]
+
+  atividade Atividades @relation(fields: [atividadesId], references: [id])
+}
+
+model Tentativas {
+  id          String @id @default(cuid())
+  alunoId     String
+  atividadeId String
+
+  atividade Atividades @relation(fields: [atividadeId], references: [id])
+  aluno     Alunos     @relation(fields: [alunoId], references: [id])
+}
+
+model AtividadesdasTurmas {
+  turmasId     String
+  atividadesId String
+
+  turma     Turmas     @relation(fields: [turmasId], references: [id])
+  atividade Atividades @relation(fields: [atividadesId], references: [id])
+
+  @@id([turmasId, atividadesId])
+}
+
+model Respostas {
+  id              String @id @default(cuid())
+  alunosId        String
+  questoesId      String
+  respostadoAluno String
+
+  aluno   Alunos   @relation(fields: [alunosId], references: [id])
+  questao Questoes @relation(fields: [questoesId], references: [id])
+}
+
+model Notas {
+  id           String @id @default(cuid())
+  alunosId     String
+  atividadesId String
+  resultado    String
+
+  aluno     Alunos     @relation(fields: [alunosId], references: [id])
+  atividade Atividades @relation(fields: [atividadesId], references: [id])
+}
