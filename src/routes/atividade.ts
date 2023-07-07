@@ -54,6 +54,7 @@ export async function atividadesRoutes(fastify: FastifyInstance) {
           include: {
             turma: {
               select: {
+                id:true,
                 name: true,
               },
             },
@@ -177,6 +178,7 @@ export async function atividadesRoutes(fastify: FastifyInstance) {
       include: {
         atividade: {
           select: {
+            id:true,
             name: true,
             enunciado: true,
             Questoes: true,

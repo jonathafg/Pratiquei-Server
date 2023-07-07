@@ -44,9 +44,9 @@ export async function turmasRoutes(fastify: FastifyInstance) {
       where: {
         professorId: professorId,
       },
-      include:{
-        Alunos:true
-      }
+      include: {
+        Alunos: true
+      },
     });
 
     return reply.status(201).send(findTurmas);
@@ -65,9 +65,9 @@ export async function turmasRoutes(fastify: FastifyInstance) {
         professorId: professorId,
         name: name,
       },
-      include:{
-        Alunos:true
-      }
+      include: {
+        Alunos: true,
+      },
     });
 
     if (!findTurmas) {

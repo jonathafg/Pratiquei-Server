@@ -35,7 +35,7 @@ export async function professoresRoutes(fastify: FastifyInstance) {
       },
     });
 
-    return reply.status(201).send("Professor cadastrado com sucesso");
+    return reply.status(201).send("Cadastro realizado com sucesso");
   });
 
   fastify.get("/professores/:username", async (request, reply) => {

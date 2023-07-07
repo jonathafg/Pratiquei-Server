@@ -49,6 +49,9 @@ export async function questoesRoutes(fastify: FastifyInstance) {
         where: {
           atividadesId: atividadesId,
         },
+        include:{
+          Respostas:true
+        }
       });
   
       if (findQuestoes.length <= 0) {

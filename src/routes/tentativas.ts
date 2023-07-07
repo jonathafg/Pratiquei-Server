@@ -78,8 +78,15 @@ export async function tentativasRoutes(fastify: FastifyInstance) {
         alunoId: alunoId,
         atividadeId: atividadeId,
       },
+      include:{
+        aluno:{
+          select:{
+            Respostas:true
+          }
+        }
+      }
     });
 
-    return reply.status(201).send(findTentativa.length);
+    return reply.status(201).send(findTentativa);
   });
 }
